@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lời chúc 20/10 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body,html{
+  width:100%; height:100%;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#ffeaf3,#fff0f8);
+  display:flex; justify-content:center; align-items:center;
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* Container card */
+#wishContainer{
+  width:100%; max-width:1000px; 
+  display:flex; justify-content:center; align-items:center;
+  position:relative;
+  flex-direction:column;
+  margin:100px 0;
+}
+
+/* Card lời chúc */
+.card{
+  background:#fff0f8;
+  border-radius:45px;
+  padding:60px 60px;
+  box-shadow:0 25px 50px rgba(255,127,169,0.35);
+  text-align:center;
+  color:#ff4f84;
+  font-weight:600;
+  font-size:calc(18px + 0.6vw);
+  line-height:1.6;
+  position:relative;
+  overflow:hidden;
+  min-height:300px;
+  animation:fadeIn 1s ease forwards;
+  word-break:break-word;
+  transition:transform 0.5s;
+  z-index:10;
+}
+.card:hover{transform:scale(1.02);}
+
+/* Bóng nền nhẹ */
+.card::before{
+  content:"";
+  position:absolute;
+  width:200%; height:200%;
+  background:radial-gradient(circle at 50% 50%, rgba(255,255,255,0.35), transparent);
+  top:-50%; left:-50%;
+  transform:rotate(25deg);
+  animation:glow 3s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+
+/* Animation */
+@keyframes fadeIn{0%{opacity:0;transform:scale(0.95);}100%{opacity:1;transform:scale(1);}}
+@keyframes glow{0%{transform:rotate(25deg) scale(1);}100%{transform:rotate(25deg) scale(1.05);}}
+
+/* Tim bay nhỏ */
+.heart{
+  position:absolute;
+  width:12px; height:12px;
+  background:#ff7fa9;
+  transform:rotate(45deg);
+  animation:fly 3s linear infinite;
+  opacity:0.9;
+  border-radius:2px;
+}
+.heart::before,.heart::after{
+  content:"";
+  position:absolute;
+  width:12px; height:12px;
+  background:#ff7fa9;
+  border-radius:50%;
+}
+.heart::before{top:-6px;left:0;}
+.heart::after{top:0;left:-6px;}
+@keyframes fly{0%{transform:translate(0,0) rotate(45deg);}100%{transform:translate(calc(300px - 600px*var(--randX)),-300px) rotate(45deg);}}
+
+/* Ảnh người yêu */
+.lovePhoto{
+  position:absolute;
+  width:370px;
+  height:370px;
+  border-radius:25px;
+  box-shadow:0 8px 25px rgba(255,127,169,0.35);
+  object-fit:cover;
+  transition:transform 0.3s;
+}
+.lovePhoto:hover{transform:scale(1.05);}
+</style>
+</head>
+<body>
+
+<div id="wishContainer">
+  <div class="card">
+    Hôm nay là ngày 20/10 đầu tiên của Cún xa nhà,<br>
+    Gián chúc Cún lúc nào cũng xinh đẹp, may mắn, nhiều sức khỏe,<br>
+    lúc nào cũng vui vẻ và hạnh phúc ạ.<br>
+    <span style="font-weight:700;color:#ff1f7a;">Gián iu Cún nhắm nhắm ạ :>></span>
+  </div>
+</div>
+
+<script>
+// Tim bay (giữ nguyên)
+for(let i=0;i<20;i++){
+  const h=document.createElement('div');
+  h.className='heart';
+  h.style.left=Math.random()*100+'%';
+  h.style.top=Math.random()*100+'%';
+  h.style.setProperty('--randX',Math.random());
+  document.body.appendChild(h);
+}
+
+// Danh sách ảnh
+let photos = [];
+for(let i=1;i<=30;i++){
+  if([2,9,11,13,16,17,23,27,29,30].includes(i)) continue;
+  photos.push(i);
+}
+for(let i=32;i<=43;i++){
+  photos.push(i);
+}
+
+// Tạo container
+const photoRing = document.createElement('div');
+photoRing.className = 'photoRing';
+document.body.appendChild(photoRing);
+
+const card = document.querySelector('.card');
+const rect = card.getBoundingClientRect();
+
+// Kích thước ảnh
+const photoSize = 90;
+const gap = 10;
+
+// Mở rộng khung so với card
+const expandW = 150; 
+const expandH = 200; 
+
+// Xác định vùng bao quanh
+const frameLeft = rect.left + window.scrollX - expandW / 2;
+const frameTop = rect.top + window.scrollY - expandH / 2;
+const frameWidth = rect.width + expandW;
+const frameHeight = rect.height + expandH;
+
+// Tổng số ảnh
+const total = photos.length;
+
+// Tỉ lệ chia ảnh giữa các cạnh
+const ratioTopBottom = 1.05;
+const ratioLeftRight = 0.95;
+
+const perim = frameWidth * 2 * ratioTopBottom + frameHeight * 2 * ratioLeftRight;
+
+const topCount = Math.round((frameWidth * ratioTopBottom) / perim * total);
+const bottomCount = topCount;
+const leftCount = Math.round((frameHeight * ratioLeftRight) / perim * total);
+const rightCount = leftCount;
+
+// Hàm tạo ảnh
+function createPhoto(num, x, y){
+  const img = document.createElement('img');
+  img.src = `${num}.jpg`;
+  img.className = 'lovePhoto';
+  img.style.width = `${photoSize}px`;
+  img.style.height = `${photoSize}px`;
+  img.style.left = `${x}px`;
+  img.style.top = `${y}px`;
+  img.style.position = 'absolute';
+  img.style.borderRadius = '20px';
+  img.style.objectFit = 'cover';
+  img.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+  img.style.boxShadow = '0 6px 15px rgba(255,127,169,0.3)';
+  img.addEventListener('mouseenter',()=>{
+    img.style.transform='scale(1.1)';
+    img.style.boxShadow='0 8px 18px rgba(255,127,169,0.45)';
+  });
+  img.addEventListener('mouseleave',()=>{
+    img.style.transform='scale(1)';
+    img.style.boxShadow='0 6px 15px rgba(255,127,169,0.3)';
+  });
+  photoRing.appendChild(img);
+}
+
+// Gán ảnh theo thứ tự quanh khung
+let idx = 0;
+
+// --- Cạnh trên ---
+for(let i=0;i<topCount && idx<photos.length;i++,idx++){
+  const t = (i + 0.5) / topCount;
+  const x = frameLeft + t * frameWidth - photoSize/2;
+  const y = frameTop - photoSize/2;
+  createPhoto(photos[idx], x, y);
+}
+
+// --- Cạnh phải (dịch sang phải 15px) ---
+for(let i=0;i<rightCount && idx<photos.length;i++,idx++){
+  const t = (i + 0.5) / rightCount;
+  const x = frameLeft + frameWidth - photoSize/2 + 50;
+  const y = frameTop + t * frameHeight - photoSize/2;
+  createPhoto(photos[idx], x, y);
+}
+
+// --- Cạnh dưới ---
+for(let i=0;i<bottomCount && idx<photos.length;i++,idx++){
+  const t = (i + 0.5) / bottomCount;
+  const x = frameLeft + (1 - t) * frameWidth - photoSize/2;
+  const y = frameTop + frameHeight - photoSize/2;
+  createPhoto(photos[idx], x, y);
+}
+
+// --- Cạnh trái (dịch sang trái 15px) ---
+for(let i=0;i<leftCount && idx<photos.length;i++,idx++){
+  const t = (i + 0.5) / leftCount;
+  const x = frameLeft - photoSize/2 - 50;
+  const y = frameTop + (1 - t) * frameHeight - photoSize/2;
+  createPhoto(photos[idx], x, y);
+}
+
+// Cập nhật khi resize
+window.addEventListener('resize',()=>location.reload());
+</script>
+
+</body>
+</html>
