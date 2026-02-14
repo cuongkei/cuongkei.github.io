@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine cho Cún 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --pink-primary: #ff4f84; --pink-light: #ffeaf3; --text-color: #444; }
+        
+        body, html { 
+            margin:0; padding:0; width:100%; height:100%; 
+            font-family: 'Quicksand', sans-serif; /* Phông chính cho toàn bộ trang */
+            background: var(--pink-light); 
+            overflow-x: hidden; 
+            scroll-behavior: smooth; 
+        }
+
+        h1, .yay-msg { 
+            font-family: 'Dancing Script', cursive; /* Phông viết tay cho tiêu đề */
+            color: var(--pink-primary);
+        }
+        
+        /* Giai đoạn 1 */
+        #questionSection { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; overflow: hidden; }
+        .pet-group { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; z-index: 1; }
+        .pet-group img { width: 150px; height: 150px; border-radius: 25px; box-shadow: 0 8px 20px rgba(255, 79, 132, 0.2); object-fit: cover; border: 4px solid white; }
+        #questionSection h1 { font-size: 3.5rem; margin-bottom: 40px; z-index: 1; }
+        
+        .btn-group { display: flex; gap: 40px; justify-content: center; align-items: center; width: 100%; min-height: 120px; position: relative; }
+        .btn { padding: 15px 45px; border: none; border-radius: 50px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: transform 0.2s; box-shadow: 0 8px 15px rgba(255, 79, 132, 0.2); font-family: 'Quicksand', sans-serif; }
+        
+        #yesBtn { background: var(--pink-primary); color: white; position: relative; z-index: 20; }
+        #noBtn { background: white; color: var(--pink-primary); white-space: nowrap; position: relative; z-index: 10; }
+
+        /* Giai đoạn 2 */
+        #letterSection { display: none; padding: 60px 20px; text-align: center; }
+        .yay-msg { font-size: 3.5rem; margin-bottom: 10px; animation: heartBeat 1s infinite; }
+        @keyframes heartBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        
+        .letter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; max-width: 1100px; margin: 40px auto; }
+        .letter-box { background: white; padding: 40px 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(255,79,132,0.1); cursor: pointer; transition: 0.3s; border: 2px solid #ffcada; }
+        .letter-box:hover { transform: translateY(-10px); border-color: var(--pink-primary); background: #fff5f8; }
+        .letter-box .icon { font-size: 3.5rem; display: block; margin-bottom: 10px; }
+        .letter-box p { font-weight: 700; color: var(--pink-primary); }
+
+        /* Modal */
+        #letterModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: #fffafa; width: 95%; max-width: 800px; padding: 35px; border-radius: 30px; position: relative; max-height: 90vh; overflow-y: auto; border: 5px solid #ffcada; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 35px; cursor: pointer; color: var(--pink-primary); }
+        .modal-text { color: var(--text-color); font-size: 1.1rem; line-height: 1.8; background: white; padding: 25px; border-radius: 15px; border-left: 8px solid var(--pink-primary); white-space: pre-wrap; text-align: left; font-weight: 500; }
+        
+        .modal-images { display: flex; justify-content: space-between; gap: 15px; margin-top: 30px; }
+        .modal-images img { width: 31%; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; border: 5px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <div id="musicContainer" style="display:none"></div>
+
+    <section id="questionSection">
+        <div class="pet-group">
+            <img src="dog2.jpg" alt="Dog 2">
+            <img src="dog.jpg" alt="Main Dog">
+            <img src="cat1.jpg" alt="Cat 1">
+        </div>
+        <h1>Em là Valentine của anh nhé? 💖</h1>
+        <div class="btn-group">
+            <button class="btn" id="yesBtn" onclick="acceptValentine()">Cóa ạ 🌸</button>
+            <button class="btn" id="noBtn" onmouseover="moveAndGrow()" onclick="moveAndGrow()">Khom ạ 😿</button>
+        </div>
+    </section>
+
+    <section id="letterSection">
+        <h1 class="yay-msg">Yayyyy, anh iu em nhiều nhắm! 🎀</h1>
+        <div class="letter-grid" id="letterGrid"></div>
+    </section>
+
+    <div id="letterModal" onclick="if(event.target == this) closeModal()">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="modal-text" id="modalText"></div>
+            <div class="modal-images" id="modalImages"></div>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const messages = ["Đừng mà 🥺", "Huhu", "Em chắc chưa? 🥺", "Thật aaa? 💔", "Gián buồn á 😭"];
+        let msgIndex = 0;
+        let yesScale = 1;
+
+        function moveAndGrow() {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 50);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 50);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+            noBtn.innerText = messages[msgIndex];
+            msgIndex = (msgIndex + 1) % messages.length;
+
+            yesScale += 0.3;
+            yesBtn.style.transform = `scale(${yesScale})`;
+        }
+
+        function acceptValentine() {
+            const musicDiv = document.getElementById('musicContainer');
+            musicDiv.innerHTML = `<iframe src="https://www.youtube.com/embed/Q22u3CKf30Q?autoplay=1&loop=1&playlist=Q22u3CKf30Q" allow="autoplay"></iframe>`;
+            
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            setTimeout(() => {
+                document.getElementById('questionSection').style.display = 'none';
+                document.getElementById('letterSection').style.display = 'block';
+                renderLetters();
+            }, 600);
+        }
+
+        const letterContents = [
+            `“Khoảnh khắc nào khiến anh nhận ra anh muốn bắt đầu mối quan hệ nghiêm túc với em”\n\nAnh nghĩ không có khoảnh khắc cụ thể nào mà khiến anh nhận ra anh muốn bắt đầu mối quan hệ nghiêm túc với em vì lúc anh muốn bắt đầu mối quan hệ là qua nhiều thời gian mình nói chuyện và tìm hiểu nhau và nó sẽ tới một lúc anh thực sự rất thích em vì em hợp anh nhiều thứ. Nhưng mà đó chỉ dừng ở việc thích thôi còn lúc mà anh muốn bắt đầu mối quan hệ nghiêm túc với em là khi anh thấy tiềm năng trong mối quan hệ tụi mình là có thể đi xa được ạ. Cụ thể thì anh rất thích mindset, cách em suy nghĩ không chỉ giống anh mà còn giúp tụi mình có thể phát triển thêm nhiều trong cả học tập và đời sống.`,
+            `“Khi em buồn hoặc im lặng, anh cảm thấy thế nào? Anh muốn làm gì nhất lúc đó?”\n\nKhi em buồn hoặc im lặng, anh sẽ xem kĩ lại xem anh có làm gì khiến em buồn và nó có thể đã ảnh hưởng tới cảm xúc của em như thế nào ạ. Anh sẽ nghĩ về lí do chuyện đó xảy ra là do anh hay như nào đó. Nếu không phải vì anh thì anh sẽ muốn nghe em tâm sự và chia sẻ bớt nỗi buồn hay sự khó chịu cùng em. Còn nếu lí do là vì anh thì anh đầu tiên sẽ xem xem mình nên hành động gì tùy trường hợp. Dù trường hợp là gì đi nữa thì anh chắc chắn sẽ rút kinh nghiệm cho lần sau và cố gắng cho vấn đề không lặp lại nữa vì anh biết những vấn đề đó đều cần phải thay đổi cho một tương lai dài về sau ạ. Anh biết lúc đó cả 2 đứa mình đều buồn và mệt nhưng anh sẽ luôn luôn muốn được nói chuyện và giải quyết vấn đề trực tiếp với em qua tin nhắn hoặc trực tiếp. Anh cũng cảm nhận được liệu vấn đề chưa được giải quyết, giải quyết một phần hay giải quyết hoàn toàn qua những gì mình giao tiếp và qua cả cách em diễn đạt cảm xúc nữa và anh luôn muốn giải quyết triệt để vấn đề ạ. Khi em im lặng vô cớ, anh sẽ muốn nhắn tin update hỏi han em còn nếu em im lặng vì có vấn đề hoặc khi em muốn có thời gian riêng cho bản thân, anh sẽ tôn trọng không gian riêng của em và sẽ hỏi em ít hơn và tìm cách update em qua những cách khác ngoài nhắn tin ạ.`,
+            `“Điều gì ở em khiến anh cảm thấy tự hào nhất khi kể với bạn bè?”\n\nĐiều ở em khiến anh cảm thấy tự hào nhất khi kể với bạn bè, bên cạnh sự xinh đẹp nhất tgioi, đó chính là việc em là người tuyệt vời, tinh tế và cute nhất mà anh từng gặp. Từ khi nhắn tin anh đã thấy em cute rồi kiểu qua cách em nhắn tin, cách em hỏi han, quan tâm tới anh thật sự nhớ lại thấy cute nhắm nhun ý em ặ. Xong rồi tới lần gặp đầu tiên lúc em trả tiền cho anh lần đi ăn đầu tiên là anh đã kiểu bằng mọi cách anh phải tán đổ em ý. Em nghe thấy có vẻ xàm vs trẩu nma anh thấy thế ạ vì nó thể hiện rằng em rấc cute xong em còn mua bình nước siu đắt cho anh bảo làm quà sinh nhật nữa anh trân trọng lắm ạ. Điều đặc biệt nhất đó chính là khi bên em, anh có động lực cải thiện bản thân, học thêm những điều mới ạ.`,
+            `“Có tật xấu nào của em mà lúc đầu anh thấy khó chịu, nhưng giờ lại thấy thương không?”\n\nGọi là tật xấu thì cũng không đúng nhưng mà anh thấy em là một người khá kĩ tính, lúc đầu anh cảm thấy khá bất ngờ và trong những lúc mình gặp chuyện, anh nghĩ cả hai đứa mình đều buồn và mệt. Tuy vậy, anh nhận ra rằng việc em kĩ tính như vậy hoàn toàn là có lí do và có vấn đề để mà giải quyết vì nó ảnh hưởng tới cảm xúc và những gì cả 2 đứa mình cảm nhận chứ không phải mỗi em. Sau mỗi lần như vậy, anh luôn cố gắng sửa đổi và tránh lặp lại lỗi sai của mình vì anh thật sự rất thương em, anh không muốn cả 2 đứa mình phải buồn phiền nhiều ạ.`,
+            `“Lần cãi nhau nào khiến anh sợ mất em nhất”\n\nLần cãi nhau mà khiến anh sợ mất em nhất chính là sau khi hôm đi chơi với quỹ ạ. Đặc biệt là từ khi đi chơi về tới lúc em hành xử khác đi qua cách nhắn tin, gọi điện là anh thấy chuyện căng thẳng hơn mọi lần. Lúc đó anh thật sự rất sợ, vì anh cũng cảm nhận rằng thời điểm lúc đó mình có nhiều chuyện xảy ra với tần suất khá nhiều xong đó cũng là giai đoạn mình có nhiều việc phải làm trên trường cũng như bên ngoài nữa nên stress hơn bình thường ạ. Đây thật sự là lỗi sai lớn của anh cũng như là sự tích tụ của nhiều lần trước đó nên anh biết kể cả anh chuẩn bị quà Noel có như thế nào đi chăng nữa thì chuyện cũng chưa chắc giải quyết xong trong 1 sớm 1 chiều. Kể cả khi anh đã tới dorm em và mình nói chuyện nhưng lúc về anh cũng vẫn rất lo cho tâm trạng của em. Trong những ngày sau đó tới trước khi đi Hon-Atsugi, anh biết em buồn và anh đã cố gắng nhắn tin hỏi han cũng như lướt reel ig để mong hiểu xem tâm trạng em ra sao sau những bài tim hoặc repost của em. Anh thấy rất nhiều bài nói về chuyện chia tay và anh thật sự rất buồn về bản thân mình vì đã tự làm tệ đi mối quan hệ vì những lí do thật sự nghe rất chán. Anh cảm thấy rất may mắn khi trong chuyến đi Hon-Atsugi đó, mình đã có cơ hội được ngồi lại và nói chuyện một cách chân thành nhất với nhau và em đã cho anh cơ hội để làm lại và thực sự làm tốt hơn. Anh rất biết ơn và anh luôn coi đó làm động lực để thể hiện bản thân nhiều hơn và đúng với bản thân hơn ạ.`,
+            `“Nếu một ngày chúng ta không còn tiếng nói chung, anh sẽ chọn buông xuôi hay tìm cách sửa chữa?”\n\nNếu một ngày chúng ta không còn tiếng nói chung, anh sẽ luôn luôn tìm cách sửa chữa vì anh thật sự muốn mối quan hệ chúng ta được bước tiếp và cải thiện, dù bất cứ trong chuyện gì, anh tin rằng sẽ có cách giải quyết vấn đề và có thể vượt qua ạ. Đương nhiên là cái gì cũng phải trong giới hạn và anh sẽ cố gắng nhiều hơn nữa ạ.`,
+            `“Trong bức tranh tương lai 5 năm tới của anh, em đang đứng đâu và làm gì?”\n\nTrong bức tranh tương lai 5 năm tới của anh, anh đang hình dung ra cảnh chúng ta đều tốt nghiệp và đi làm hoặc đi học thạc sĩ. Trong đó chúng ta đã học hỏi và trưởng thành rất nhiều trong cả học tập và đời sống. Anh tin rằng tình yêu lúc đó của chúng ta đã hiểu nhau hơn và là động lực để cả 2 học hỏi và phát triển bên nhau, hướng tới một chặng đường mới phức tạp hơn, có nhiều thứ phải học hơn nhưng cũng rất đáng để trải nghiệm ạ. Anh mong rằng lúc đó chúng ta có thể ở gần nhau để có thể gặp nhau nhiều hơn, chia sẻ được với nhau nhiều khoảnh khắc đẹp, bình dị có, ko bình dị cx có =)) Anh nghĩ lúc đó chúng ta cũng sẽ thay đổi rất nhiều so với bây giờ đó ạ, kể cả về mindset hay tất cả những thứ khác nhưng anh tin chúng ta sẽ phát triển mindset hợp nhau, tích cực và bên nhau ạ.`,
+            `“Anh nghĩ điều gì là quan trọng nhất để giữ chúng ta bên nhau cả đời?”\n\nAnh nghĩ điều quan trọng nhất để giữ chúng ta bên nhau cả đời đó là giao tiếp hiệu quả ạ. Qua nhiều chuyện của mình thì anh nhận thấy nhờ giao tiếp hiệu quả và nói thẳng thì chúng ta đã hiểu nhau hơn và iu nhau hơn cũng như giúp mối quan hệ tụi mình đi đúng hướng hơn ạ. Hồi xưa anh nghĩ nhiều nhưng anh lại ít nói ra, kể cả với gia đình hay bạn bè nên ít khi mọi người hiểu được cảm xúc sâu bên trong anh nhưng nhờ gặp em, anh đã có thể giao tiếp tốt hơn và có thể yêu và thương em trọn vẹn và đủ đầy hơn ạ. Anh biết cả đời nghe khá xa xôi nhưng anh tin rằng nếu cả 2 đều muốn giao tiếp và đồng hành trước mọi vấn đề thì mọi chuyện sẽ vượt qua được ạ. Bởi vậy nên anh cũng đang học cách giao tiếp tốt hơn, không chỉ là trả lời và nói mà còn là cách trả lời đúng lúc, đúng trọng tâm, trả lời sao cho em hiểu và diễn đạt được hết ý mà mình muốn nói ạ.`,
+            `“Anh nghĩ ngôn ngữ tình yêu (Love Language) của em là gì? Anh đã đáp ứng được nó chưa?”\n\nAnh nghĩ những ngôn ngữ tình yêu của em là: skinskip (ôm, hun, nắm tay, … =))), quan tâm, hỏi han anh kiểu ko muốn anh đi nhiều mệt hoặc sợ anh tốn tiền, nấu đồ ăn hoặc mua đồ ăn cho anh, mua những đồ mà anh thích hoặc em cảm thấy có ý nghĩa cho anh và đặc biệt phải cảm nhận được rằng anh đang thực sự quan tâm và iu thương em chứ ko phải vài lời nhắn tin hay voice chat và anh thấy điều này là quan trọng nhất ạ. Cái này anh nghĩ có vẻ chung chung vì nó bao gồm rất nhiều yếu tố bao gồm cách anh quan tâm, hỏi han em trong ngày, thái độ, biểu cảm của anh khi mình gặp nhau, cách anh nói chuyện với em, … Xưa anh kiểu đúng không nghĩ nhiều lun ý nên nhiều lúc anh chưa để ý tới cảm xúc của em nhưng giờ anh biết quan tâm hơn rùi nên anh cũng có thể cảm nhận lúc nào em không như bình thường là anh cx bit nhanh hơn ạ. Nma riêng về love language skinskip thì a nghĩ đây là 1 trong những love language mà anh đang làm tốt nhất ạ =)) Anh sẽ cố gắng típ ạ.`,
+            `“Câu hỏi cuối cùng: Tại sao lại là Em, mà không phải bất kì ai khác?”\n\nAnh chọn em và anh cảm thấy may mắn khi được em chọn vì đối với anh, em là đặc biệt nhất và ngày càng anh càng thấy em đặc biệt ạ. Từ những ngày đầu anh đã thấy em khác với những cô gái khác, từ nét đẹp của em tới những biểu cảm, hành động rất tự nhiên của em làm anh để ý ngay từ lần gặp đầu tiên rùi ạ. Xong tới cách nhắn tin, cách bắt chuyện, cách em làm anh cười và cảm thấy thật sự đặc biệt dù chỉ qua tin nhắn, thật hay ho em nhỉ. Anh chưa bao giờ nhắn tin với ai mà có được cảm giác như vậy, cảm giác siêu hợp mà thoải mái mà có thể kể hết tất cả những câu chuyện từ bé đến giờ, từ những câu chuyện xấu hổ mà đến cả ba mẹ anh cũng chưa chắc dám kể hết tới bạn bè thân thiết ở trường. Kiểu chưa bao giờ có ai gửi anh nhìu ảnh mà tính cách cute hột me như thế ý em ạ. Kể cả nhắn tin xàm xàm cậu có thích tớ ko đến deeptalk về chuyện tình yêu hay kiến thức chuyên môn thì anh rất thích được trao đổi với em và anh muốn được học càng nhiều hơn nữa để nói nhiều thứ, nhiều topic hơn với em ạ. Em có thể bảo đó là do dopamine tình yêu nhưng mà kể cả đến giờ, dù lúc nắm tay không còn run như trước, anh vẫn cảm nhận một nét đặc biệt rất riêng từ em kể cả đó chỉ là lúc nắm tay đi bên nhau em ạ. Đó là lúc chuyện vui, còn khi chuyện buồn thì em là người siêu thẳng sắn, nghĩ gì nói ấy và anh thật sự rất trân trọng như vậy vì mình có thể giải quyết vấn đề ạ. Lúc trước thì anh muốn thâu đêm nhắn tin với em, cùng em chuyện trò nhưng giờ anh thích thâu đêm làm cái khác ạ =)) Anh đùa ạ, bây giờ thì anh muốn thực sự cố gắng phát triển bản thân để có một tương lai chắc chắn cùng em và anh biết chặng đường này rất phức tạp và khó khăn vì dù gì mình cũng chỉ mới là sinh viên năm nhất, còn nhiều điều để học và khám phá, nhiều người để tiếp xúc, nhiều nơi để đi, nhiều món ăn để ăn?! nhưng anh rất vui khi được đồng hành cùng em và kiểu anh cảm thấy mình có thể làm tất cả mọi thứ ạ.`
+        ];
+
+        function renderLetters() {
+            const grid = document.getElementById('letterGrid');
+            const icons = ["✉️", "🎁", "💝", "💖", "🌸", "💌", "🧸", "🌹", "🎀", "🍭"];
+            grid.innerHTML = '';
+            for (let i = 1; i <= 10; i++) {
+                const box = document.createElement('div');
+                box.className = 'letter-box';
+                box.innerHTML = `<span class="icon">${icons[i-1]}</span><p>Thư số ${i}</p>`;
+                box.onclick = () => openLetter(i);
+                grid.appendChild(box);
+            }
+        }
+
+        function openLetter(num) {
+            const modal = document.getElementById('letterModal');
+            document.getElementById('modalText').innerText = letterContents[num-1];
+            const imgContainer = document.getElementById('modalImages');
+            imgContainer.innerHTML = '';
+            for (let j = 1; j <= 3; j++) {
+                const img = document.createElement('img');
+                img.src = `thu${num}_anh${j}.jpg`;
+                img.onerror = () => { img.src = 'https://via.placeholder.com/200?text=Kỷ+Niệm+'+j; };
+                imgContainer.appendChild(img);
+            }
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('letterModal').style.display = 'none'; }
+    </script>
+</body>
+</html>
