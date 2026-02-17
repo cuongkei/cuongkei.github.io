@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bụng bel 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body,html{
+  margin:0; padding:0; width:100%; height:100%;
+  font-family:'Poppins', sans-serif;
+  background:#ffeaf3;
+  display:flex; justify-content:center; align-items:center;
+}
+#intro{
+  width:90%; max-width:600px;
+  text-align:center;
+  position:relative;
+}
+#intro h1{
+  color:#ff4f84;
+  font-weight:700;
+  font-size:calc(18px + 2vw);
+  margin-bottom:10px;
+  white-space:nowrap;
+  position:relative;
+  z-index:2;
+}
+#imgContainer{
+  position:relative;
+  width:100%;
+}
+#imgContainer img{
+  width:100%;
+  border-radius:15px;
+  display:block;
+}
+#playBtn{
+  position:absolute;
+  left:50%;
+  top:77%; /* chỉnh top để nằm trên ảnh, dưới dòng chữ */
+  transform:translateX(-50%);
+  padding:12px 25px;
+  background:#ff7fa9;
+  color:white;
+  border:none;
+  border-radius:15px;
+  font-size:1rem;
+  cursor:pointer;
+  transition:0.3s;
+  z-index:3;
+}
+#playBtn:hover{
+  background:#ff4f84;
+  transform:translateX(-50%) scale(1.05);
+}
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <h1>Cún ấn vô đây ik</h1>
+  <div id="imgContainer">
+    <img src="gian.jpg" alt="Intro Image">
+    <button id="playBtn">Bụng bel</button>
+  </div>
+</div>
+
+<script>
+document.getElementById('playBtn').addEventListener('click',()=>{
+  window.location.href = "index2.html";
+});
+</script>
+
+</body>
+</html>
