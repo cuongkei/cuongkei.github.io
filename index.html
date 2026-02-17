@@ -1,76 +1,69 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bụng bel 💖</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-<style>
-body,html{
-  margin:0; padding:0; width:100%; height:100%;
-  font-family:'Poppins', sans-serif;
-  background:#ffeaf3;
-  display:flex; justify-content:center; align-items:center;
-}
-#intro{
-  width:90%; max-width:600px;
-  text-align:center;
-  position:relative;
-}
-#intro h1{
-  color:#ff4f84;
-  font-weight:700;
-  font-size:calc(18px + 2vw);
-  margin-bottom:10px;
-  white-space:nowrap;
-  position:relative;
-  z-index:2;
-}
-#imgContainer{
-  position:relative;
-  width:100%;
-}
-#imgContainer img{
-  width:100%;
-  border-radius:15px;
-  display:block;
-}
-#playBtn{
-  position:absolute;
-  left:50%;
-  top:77%; /* chỉnh top để nằm trên ảnh, dưới dòng chữ */
-  transform:translateX(-50%);
-  padding:12px 25px;
-  background:#ff7fa9;
-  color:white;
-  border:none;
-  border-radius:15px;
-  font-size:1rem;
-  cursor:pointer;
-  transition:0.3s;
-  z-index:3;
-}
-#playBtn:hover{
-  background:#ff4f84;
-  transform:translateX(-50%) scale(1.05);
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museum of Us - Gián & Cún 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0; padding: 0;
+            background: #ffeaf3;
+            font-family: 'Poppins', sans-serif;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
+        }
+        .header { margin: 50px 0; text-align: center; color: #ff4f84; }
+        .timeline {
+            display: flex; flex-direction: column; gap: 25px;
+            width: 90%; max-width: 450px;
+        }
+        .time-box {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: #ff4f84;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 20px rgba(255, 127, 169, 0.2);
+            transition: 0.3s;
+            border: 2px solid transparent;
+        }
+        .time-box:hover {
+            transform: translateY(-5px);
+            border-color: #ff7fa9;
+            background: #fffafa;
+        }
+        .info h3 { margin: 0; font-size: 1.2rem; }
+        .info p { margin: 5px 0 0; font-size: 0.85rem; color: #888; }
+        .icon { font-size: 2rem; }
+    </style>
 </head>
 <body>
 
-<div id="intro">
-  <h1>Cún ấn vô đây ik</h1>
-  <div id="imgContainer">
-    <img src="gian.jpg" alt="Intro Image">
-    <button id="playBtn">Bụng bel</button>
-  </div>
-</div>
+    <div class="header">
+        <h1>Kỷ niệm của Gián và Cún 🎀</h1>
+    </div>
 
-<script>
-document.getElementById('playBtn').addEventListener('click',()=>{
-  window.location.href = "index2.html";
-});
-</script>
+    <div class="timeline">
+        <a href="index.html" class="time-box">
+            <div class="info">
+                <h3>20/10/2025</h3>
+                <p>Ngày Phụ nữ Việt Nam</p>
+            </div>
+            <div class="icon">🌸</div>
+        </a>
+
+        <a href="valentine.html" class="time-box">
+            <div class="info">
+                <h3>14/02/2026</h3>
+                <p>Valentine's Day</p>
+            </div>
+            <div class="icon">💝</div>
+        </a>
+    </div>
 
 </body>
 </html>
