@@ -20,6 +20,7 @@
 
         #musicContainer { width: 0; height: 0; overflow: hidden; position: absolute; visibility: hidden; }
 
+        /* Đám mây trắng */
         .cloud {
             position: absolute; background: white; border-radius: 100px;
             opacity: 0.6; filter: blur(3px); animation: moveCloud linear infinite; z-index: 1;
@@ -27,8 +28,37 @@
         .cloud::before, .cloud::after { content: ''; position: absolute; background: white; border-radius: 50%; }
         .c1 { width: 120px; height: 40px; top: 15%; left: -150px; animation-duration: 25s; }
         .c2 { width: 180px; height: 50px; top: 45%; left: -200px; animation-duration: 35s; animation-delay: 5s; }
-        
         @keyframes moveCloud { from { left: -200px; } to { left: 100vw; } }
+
+        /* HIỆU ỨNG TIM BAY NHỎ */
+        .heart {
+            position: absolute;
+            width: 12px; height: 12px;
+            background: #ff7fa9;
+            transform: rotate(45deg);
+            animation: fly 4s linear forwards; /* Dùng forwards để mất hẳn khi xong */
+            opacity: 0.8;
+            border-radius: 2px;
+            z-index: 2;
+        }
+        .heart::before, .heart::after {
+            content: "";
+            position: absolute;
+            width: 12px; height: 12px;
+            background: #ff7fa9;
+            border-radius: 50%;
+        }
+        .heart::before { top: -6px; left: 0; }
+        .heart::after { top: 0; left: -6px; }
+
+        @keyframes fly {
+            0% { transform: translate(0, 0) rotate(45deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { 
+                transform: translate(calc(var(--randX) * 400px - 200px), -600px) rotate(45deg); 
+                opacity: 0; 
+            }
+        }
 
         .header-title {
             font-family: 'Dancing Script', cursive; color: var(--pink-primary); 
@@ -41,7 +71,6 @@
             display: flex; flex-direction: column; align-items: center;
             animation: float 5s ease-in-out infinite; cursor: pointer; z-index: 5;
         }
-
         @keyframes float {
             0%, 100% { transform: translateY(0) rotate(-0.5deg); }
             50% { transform: translateY(-35px) rotate(0.5deg); }
@@ -68,7 +97,7 @@
         .envelope-icon { font-size: 3rem; animation: heartbeat 1.5s infinite; }
         @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-        /* Modal Lá thư với khả năng cuộn */
+        /* Modal Lá thư */
         #letterSection {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 79, 132, 0.2); backdrop-filter: blur(10px);
@@ -81,34 +110,19 @@
             box-shadow: 0 25px 60px rgba(255, 79, 132, 0.25);
             text-align: left; line-height: 1.8; color: #444;
             animation: slideUp 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            
-            /* PHẦN QUAN TRỌNG: Cho phép cuộn nội dung */
-            max-height: 80vh; 
-            overflow-y: auto;
-            position: relative;
+            max-height: 80vh; overflow-y: auto; position: relative;
         }
-
-        /* Tùy chỉnh thanh cuộn cho đẹp */
         .letter-paper::-webkit-scrollbar { width: 6px; }
-        .letter-paper::-webkit-scrollbar-thumb { background: var(--pink-light); border-radius: 10px; }
-
-        @keyframes slideUp { from { transform: translateY(150px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .letter-paper::-webkit-scrollbar-thumb { background: var(--pink-light); border-radius: 100px; }
 
         .letter-text { font-size: 1.15rem; white-space: pre-wrap; font-weight: 500; }
         
         .back-btn {
-            background: linear-gradient(45deg, #ff4f84, #ff8dad); 
-            color: white; border: none;
+            background: linear-gradient(45deg, #ff4f84, #ff8dad); color: white; border: none;
             padding: 15px; border-radius: 50px; cursor: pointer;
-            font-weight: 700; font-family: 'Quicksand'; 
-            margin-top: 30px; width: 100%;
-            font-size: 1rem;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(255, 79, 132, 0.3);
-            /* Đảm bảo nút luôn ở cuối cùng nội dung cuộn */
-            display: block;
+            font-weight: 700; font-family: 'Quicksand'; margin-top: 30px; width: 100%;
+            font-size: 1rem; transition: 0.3s; box-shadow: 0 5px 15px rgba(255, 79, 132, 0.3);
         }
-        .back-btn:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(255, 79, 132, 0.4); }
     </style>
 </head>
 <body onclick="playMusicFallback()">
@@ -151,9 +165,33 @@ Anh iu em bé nhiều lắm lun ạ ><.
     </div>
 
     <script>
-        window.onload = function() {
-            injectMusic();
-        };
+        // Hàm tạo tim bay ngẫu nhiên
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            // Vị trí ngẫu nhiên từ dưới màn hình
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = "100vh";
+            
+            // Biến ngẫu nhiên cho animation fly
+            heart.style.setProperty('--randX', Math.random());
+            
+            // Kích thước ngẫu nhiên
+            const size = Math.random() * 10 + 10 + "px";
+            heart.style.width = size;
+            heart.style.height = size;
+
+            document.body.appendChild(heart);
+
+            // Xóa tim sau khi bay xong để nhẹ web
+            setTimeout(() => { heart.remove(); }, 4000);
+        }
+
+        // Tạo tim mỗi 400ms
+        setInterval(createHeart, 400);
+
+        window.onload = function() { injectMusic(); };
 
         function injectMusic() {
             const musicDiv = document.getElementById('musicContainer');
@@ -162,22 +200,13 @@ Anh iu em bé nhiều lắm lun ạ ><.
             }
         }
 
-        function playMusicFallback() {
-            injectMusic();
-        }
+        function playMusicFallback() { injectMusic(); }
 
         function openLetter() {
             injectMusic();
-            confetti({ 
-                particleCount: 200, 
-                spread: 100, 
-                origin: { y: 0.6 }, 
-                colors: ['#ff4f84', '#ffb3c6', '#ffffff'] 
-            });
-
+            confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#ff4f84', '#ffb3c6', '#ffffff'] });
             setTimeout(() => {
                 document.getElementById('letterSection').style.display = 'flex';
-                // Đưa thanh cuộn về đầu thư mỗi khi mở
                 document.getElementById('scrollableLetter').scrollTop = 0;
             }, 600);
         }
@@ -186,7 +215,6 @@ Anh iu em bé nhiều lắm lun ạ ><.
             const letter = document.getElementById('letterSection');
             letter.style.opacity = '0';
             letter.style.transition = 'opacity 0.5s';
-            
             setTimeout(() => {
                 letter.style.display = 'none';
                 letter.style.opacity = '1';
