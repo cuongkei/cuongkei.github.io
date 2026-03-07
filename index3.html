@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi em yêu của anh 🌷</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --pink-primary: #ff4f84; --pink-light: #ffeaf3; --basket-brown: #a67c52; }
+        
+        body { 
+            margin:0; padding:0; width:100%; height:100vh; 
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(var(--pink-light), #ffffff); 
+            display: flex; flex-direction: column; align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Đám mây trắng trôi */
+        .cloud {
+            position: absolute; background: white; border-radius: 100px;
+            opacity: 0.6; filter: blur(3px); animation: moveCloud linear infinite; z-index: 1;
+        }
+        .cloud::before, .cloud::after { content: ''; position: absolute; background: white; border-radius: 50%; }
+        .c1 { width: 120px; height: 40px; top: 15%; left: -150px; animation-duration: 20s; }
+        .c2 { width: 180px; height: 50px; top: 40%; left: -200px; animation-duration: 30s; animation-delay: 7s; }
+        
+        @keyframes moveCloud { from { left: -200px; } to { left: 100vw; } }
+
+        .header-title {
+            font-family: 'Dancing Script', cursive; 
+            color: var(--pink-primary); 
+            font-size: 3.5rem; 
+            margin-top: 40px;
+            z-index: 5;
+        }
+
+        /* Khinh khí cầu */
+        .balloon-wrapper {
+            position: relative;
+            margin-top: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            animation: float 5s ease-in-out infinite;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-0.5deg); }
+            50% { transform: translateY(-30px) rotate(0.5deg); }
+        }
+
+        .heart-balloon {
+            width: 600px; 
+            max-width: 85vw;
+            filter: drop-shadow(0 15px 30px rgba(255, 79, 132, 0.3));
+            z-index: 6;
+        }
+
+        /* 2 dây thừng thẳng dọc */
+        .ropes-container {
+            position: relative;
+            width: 120px; /* Độ rộng giữa 2 dây */
+            height: 80px;
+            margin-top: -20px; /* Sát chân trái tim */
+            display: flex;
+            justify-content: space-between;
+        }
+        .rope {
+            width: 2px; 
+            height: 100%;
+            background: rgba(166, 124, 82, 0.5);
+            border-radius: 2px;
+        }
+
+        .basket {
+            background: var(--basket-brown);
+            width: 130px; height: 85px;
+            border-radius: 8px 8px 25px 25px;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+            margin-top: -5px; /* Nối liền với dây */
+            border: 2px solid #8d6641;
+            z-index: 7;
+        }
+
+        .envelope-icon { font-size: 3rem; animation: heartbeat 1.5s infinite; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+        /* Màn hình Lá thư */
+        #letterSection {
+            display: none; position: fixed; top: 0; left: 0; 
+            width: 100%; height: 100%;
+            background: rgba(255, 79, 132, 0.15);
+            backdrop-filter: blur(8px);
+            z-index: 100; align-items: center; justify-content: center;
+        }
+
+        .letter-paper {
+            background: #fff; max-width: 500px; width: 85%;
+            padding: 40px; border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(255, 79, 132, 0.2);
+            text-align: left; line-height: 1.8; color: #444;
+            animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes slideUp { from { transform: translateY(150px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .letter-text { font-size: 1.1rem; white-space: pre-wrap; font-weight: 500; }
+        
+        .back-btn {
+            background: var(--pink-primary); color: white; border: none;
+            padding: 12px; border-radius: 50px; cursor: pointer;
+            font-weight: 700; font-family: 'Quicksand'; margin-top: 30px; width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+
+    <h1 class="header-title">Gửi em yêu của anh 🌷</h1>
+
+    <div class="balloon-wrapper" onclick="openLetter()">
+        <img src="heart_final.png" alt="Trái tim hoa hồng" class="heart-balloon">
+        
+        <div class="ropes-container">
+            <div class="rope"></div>
+            <div class="rope"></div>
+        </div>
+
+        <div class="basket">
+            <span class="envelope-icon">✉️</span>
+        </div>
+    </div>
+
+    <div id="letterSection">
+        <div class="letter-paper">
+            <h2 style="font-family: 'Dancing Script'; color: var(--pink-primary); font-size: 2.5rem; margin-top: 0; text-align: center;">Chúc mừng 8/3!</h2>
+            <div class="letter-text">
+Gửi em yêu của anh, chúc mừng ngày 8/3 em bé iu dấu của anh ạ!! 
+
+Anh chúc em ngày càng xinh đẹp, dễ thương, mạnh khỏe, vui vẻ ạ. Anh cũng chúc em luôn tươi tắn, hạnh phúc và giữ nụ cười trên môi. 
+
+Đặc biệt nhất, anh mong rằng em có thể tự tin và phát triển bản thân tốt hơn nữa cũng như là mình tiếp tục đồng hành cùng nhau, em nhé. 
+
+Anh iu em bé nhiều lắm lun ạ ><.
+            </div>
+            <p align="right" style="font-weight: 700; margin-top: 25px;">
+                Yêu em thật nhiều,<br>Anh ❤️
+            </p>
+            <button class="back-btn" onclick="window.location.href='index.html'">Quay về Bảo tàng</button>
+        </div>
+    </div>
+
+    <script>
+        function openLetter() {
+            confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#ff4f84', '#ffb3c6', '#ffffff'] });
+            setTimeout(() => {
+                document.getElementById('letterSection').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }, 600);
+        }
+    </script>
+</body>
+</html>
