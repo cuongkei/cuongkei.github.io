@@ -14,21 +14,18 @@
             font-family: 'Quicksand', sans-serif;
             background: linear-gradient(var(--pink-light), #ffffff); 
             display: flex; flex-direction: column; align-items: center;
-            /* Ẩn thanh cuộn ngang, nhưng cho phép cuộn dọc nếu khinh khí cầu quá cao trên màn hình nhỏ */
-            overflow-x: hidden; 
-            overflow-y: auto;
+            overflow: hidden;
             position: relative;
         }
 
-        /* Đám mây trắng trôi - làm mờ đi một chút để nổi bật khinh khí cầu */
+        /* Đám mây trắng trôi */
         .cloud {
             position: absolute; background: white; border-radius: 100px;
-            opacity: 0.4; filter: blur(4px); animation: moveCloud linear infinite; z-index: 1;
+            opacity: 0.6; filter: blur(3px); animation: moveCloud linear infinite; z-index: 1;
         }
         .cloud::before, .cloud::after { content: ''; position: absolute; background: white; border-radius: 50%; }
-        .c1 { width: 120px; height: 40px; top: 10%; left: -150px; animation-duration: 25s; }
-        .c2 { width: 180px; height: 50px; top: 30%; left: -200px; animation-duration: 35s; animation-delay: 7s; }
-        .c3 { width: 150px; height: 45px; top: 60%; left: -180px; animation-duration: 28s; animation-delay: 12s; }
+        .c1 { width: 120px; height: 40px; top: 15%; left: -150px; animation-duration: 20s; }
+        .c2 { width: 180px; height: 50px; top: 40%; left: -200px; animation-duration: 30s; animation-delay: 7s; }
         
         @keyframes moveCloud { from { left: -200px; } to { left: 100vw; } }
 
@@ -36,70 +33,63 @@
             font-family: 'Dancing Script', cursive; 
             color: var(--pink-primary); 
             font-size: 3.5rem; 
-            margin-top: 30px; /* Giảm margin trên một chút */
+            margin-top: 40px;
             z-index: 5;
-            text-align: center;
         }
 
-        /* Khinh khí cầu - Bố cục cho phép hiển thị khổng lồ */
+        /* Khinh khí cầu */
         .balloon-wrapper {
             position: relative;
-            margin-top: 10px;
+            margin-top: 20px;
             display: flex; flex-direction: column; align-items: center;
-            animation: float 6s ease-in-out infinite; /* Làm động tác bay chậm lại cho hùng vĩ */
+            animation: float 5s ease-in-out infinite;
             cursor: pointer;
             z-index: 5;
-            /* Đảm bảo phần dưới không bị che khuất */
-            padding-bottom: 50px; 
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(-0.3deg); }
-            50% { transform: translateY(-40px) rotate(0.3deg); } /* Đu đưa biên độ lớn hơn */
+            0%, 100% { transform: translateY(0) rotate(-0.5deg); }
+            50% { transform: translateY(-30px) rotate(0.5deg); }
         }
 
-        /* Thân khinh khí cầu - TO GẤP ĐÔI (lên tới 1200px) */
+        /* Kích thước bình thường (600px) */
         .heart-balloon {
-            width: 1200px; /* Siêu to */
-            max-width: 95vw; /* Đảm bảo vẫn hiển thị vừa trên màn hình điện thoại/tablet */
-            filter: drop-shadow(0 20px 50px rgba(255, 79, 132, 0.4));
+            width: 600px; 
+            max-width: 85vw;
+            filter: drop-shadow(0 15px 30px rgba(255, 79, 132, 0.3));
             z-index: 6;
-            transition: width 0.3s;
         }
 
-        /* 2 dây thừng thẳng dọc - To hơn cho cân xứng */
+        /* 2 dây thừng thẳng dọc */
         .ropes-container {
             position: relative;
-            width: 250px; /* Độ rộng giữa 2 dây lớn hơn */
-            height: 120px; /* Dây dài hơn */
-            margin-top: -50px; /* Sát chân trái tim */
+            width: 140px; 
+            height: 100px;
+            margin-top: -30px; 
             display: flex;
             justify-content: space-between;
         }
         .rope {
-            width: 4px; /* Dây dày hơn */
+            width: 2px; 
             height: 100%;
-            background: rgba(166, 124, 82, 0.6);
-            border-radius: 4px;
+            background: rgba(166, 124, 82, 0.5);
         }
 
-        /* Giỏ đựng thư to hơn */
         .basket {
             background: var(--basket-brown);
-            width: 220px; /* To hơn */
-            height: 140px; /* Cao hơn */
-            border-radius: 15px 15px 50px 50px;
+            width: 130px; height: 85px;
+            border-radius: 8px 8px 25px 25px;
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
-            margin-top: -10px; /* Nối liền với dây */
-            border: 4px solid #8d6641;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+            margin-top: -5px; 
+            border: 2px solid #8d6641;
             z-index: 7;
         }
 
-        .envelope-icon { font-size: 5rem; animation: heartbeat 1.5s infinite; }
+        .envelope-icon { font-size: 3rem; animation: heartbeat 1.5s infinite; }
         @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-        /* Màn hình Lá thư - Giữ nguyên không thay đổi */
+        /* Màn hình Lá thư */
         #letterSection {
             display: none; position: fixed; top: 0; left: 0; 
             width: 100%; height: 100%;
@@ -114,8 +104,6 @@
             box-shadow: 0 20px 50px rgba(255, 79, 132, 0.2);
             text-align: left; line-height: 1.8; color: #444;
             animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow-y: auto; /* Thêm cuộn cho thư trên màn hình nhỏ */
-            max-height: 90vh;
         }
         @keyframes slideUp { from { transform: translateY(150px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
@@ -132,12 +120,11 @@
 
     <div class="cloud c1"></div>
     <div class="cloud c2"></div>
-    <div class="cloud c3"></div>
 
     <h1 class="header-title">Gửi em yêu của anh 🌷</h1>
 
     <div class="balloon-wrapper" onclick="openLetter()">
-        <img src="heart_final.png" alt="Trái tim hoa hồng khổng lồ" class="heart-balloon">
+        <img src="heart_final.png" alt="Trái tim hoa hồng" class="heart-balloon">
         
         <div class="ropes-container">
             <div class="rope"></div>
@@ -155,7 +142,7 @@
             <div class="letter-text">
 Gửi em yêu của anh, chúc mừng ngày 8/3 em bé iu dấu của anh ạ!! 
 
-Anh chúc em ngày càng xinh đẹp, dễ thương, mạnh khỏe, vui vẻ ạ. Anh cũng chúc em luôn tươi tắn, hạnh phúc và giữ nụ cười trên môi. 
+Anh chúc em ngày càng xinh đẹp, dễ thương, mạnh khỏe, vui vẻ, học giỏi ạ. Anh cũng chúc em luôn tươi tắn, hạnh phúc và giữ nụ cười trên môi. 
 
 Đặc biệt nhất, anh mong rằng em có thể tự tin và phát triển bản thân tốt hơn nữa cũng như là mình tiếp tục đồng hành cùng nhau, em nhé. 
 
@@ -170,11 +157,9 @@ Anh iu em bé nhiều lắm lun ạ ><.
 
     <script>
         function openLetter() {
-            // Tăng lượng pháo confetti cho hoành tráng
-            confetti({ particleCount: 250, spread: 120, origin: { y: 0.6 }, colors: ['#ff4f84', '#ffb3c6', '#ffffff'] });
+            confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#ff4f84', '#ffb3c6', '#ffffff'] });
             setTimeout(() => {
                 document.getElementById('letterSection').style.display = 'flex';
-                // Ẩn cuộn của body khi mở thư
                 document.body.style.overflow = 'hidden';
             }, 600);
         }
