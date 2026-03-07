@@ -9,6 +9,7 @@
     <style>
         :root { 
             --pink-primary: #ff4f84; 
+            --pink-dark: #ff3366; /* Màu đậm hơn */
             --pink-light: #ffeaf3; 
             --basket-brown: #a67c52; 
         }
@@ -22,10 +23,8 @@
             position: relative;
         }
 
-        /* Thùng chứa nhạc ẩn */
         #musicContainer { width: 0; height: 0; overflow: hidden; position: absolute; visibility: hidden; }
 
-        /* Mây bay nhẹ nhàng */
         .cloud {
             position: absolute; background: white; border-radius: 100px;
             opacity: 0.5; filter: blur(3px); animation: moveCloud linear infinite; z-index: 1;
@@ -35,10 +34,10 @@
         .c2 { width: 180px; height: 50px; top: 45%; left: -200px; animation-duration: 35s; animation-delay: 5s; }
         @keyframes moveCloud { from { left: -200px; } to { left: 100vw; } }
 
-        /* HIỆU ỨNG TIM BAY NGHỆ THUẬT (GIẢM LẶP) */
+        /* HIỆU ỨNG TIM BAY CHẬM & ĐẬM */
         .heart {
             position: absolute;
-            background: #ff7fa9;
+            background: var(--pink-dark); /* Màu đậm hơn */
             transform: rotate(45deg);
             animation: fly var(--duration) linear forwards;
             opacity: var(--opacity);
@@ -54,10 +53,14 @@
         .heart::after { top: 0; left: -50%; }
 
         @keyframes fly {
-            0% { transform: translateY(10vh) rotate(45deg) scale(0); opacity: 0; }
-            10% { opacity: var(--opacity); }
+            0% { 
+                transform: translateY(10vh) rotate(45deg) scale(0); 
+                opacity: 0; 
+            }
+            15% { opacity: var(--opacity); }
             100% { 
-                transform: translate(var(--drift), -110vh) rotate(var(--rotation)) scale(1.2); 
+                /* Drift thu hẹp lại để bay đúng chiều lên trên */
+                transform: translate(var(--drift), -120vh) rotate(45deg) scale(1.1); 
                 opacity: 0; 
             }
         }
@@ -68,7 +71,6 @@
             text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
         }
 
-        /* Khinh khí cầu */
         .balloon-wrapper {
             position: relative; margin-top: 20px;
             display: flex; flex-direction: column; align-items: center;
@@ -100,7 +102,6 @@
         .envelope-icon { font-size: 3rem; animation: heartbeat 1.5s infinite; }
         @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-        /* Lá thư */
         #letterSection {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 79, 132, 0.2); backdrop-filter: blur(10px);
@@ -168,25 +169,28 @@ Anh iu em bé nhiều lắm lun ạ ><.
     </div>
 
     <script>
-        // Hệ thống trái tim bay tự nhiên
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.style.left = Math.random() * 100 + "vw";
-            heart.style.bottom = "-5vh"; 
-            const size = Math.random() * 10 + 8 + "px";
+            heart.style.bottom = "-10vh"; 
+            
+            const size = Math.random() * 8 + 10 + "px"; // Kích thước đồng đều hơn
             heart.style.width = size;
             heart.style.height = size;
-            heart.style.setProperty('--opacity', Math.random() * 0.4 + 0.3);
-            heart.style.setProperty('--duration', Math.random() * 4 + 5 + "s"); // Tốc độ đa dạng
-            heart.style.setProperty('--drift', (Math.random() * 400 - 200) + "px"); // Hướng bay tản mát
-            heart.style.setProperty('--rotation', (Math.random() * 360 + 45) + "deg");
+
+            heart.style.setProperty('--opacity', Math.random() * 0.3 + 0.5); // Đậm hơn
+            heart.style.setProperty('--duration', Math.random() * 4 + 8 + "s"); // Bay rất chậm (8-12s)
+            
+            // Giới hạn drift nhỏ (-50px đến 50px) để bay đúng chiều lên
+            heart.style.setProperty('--drift', (Math.random() * 100 - 50) + "px"); 
+            
             document.body.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 9000);
+            setTimeout(() => { heart.remove(); }, 12000);
         }
 
-        // Tạo tim thưa hơn để tránh bị cụm (1 giây 1 con)
-        setInterval(createHeart, 1000);
+        // Tạo tim thường xuyên hơn (400ms) nhưng bay chậm để lấp đầy màn hình
+        setInterval(createHeart, 400);
 
         window.onload = function() { injectMusic(); };
 
