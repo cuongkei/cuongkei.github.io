@@ -7,7 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --pink-primary: #ff4f84; --pink-light: #ffeaf3; --basket-brown: #a67c52; }
+        :root { 
+            --pink-primary: #ff4f84; 
+            --pink-light: #ffeaf3; 
+            --basket-brown: #a67c52; 
+        }
         
         body { 
             margin:0; padding:0; width:100%; height:100vh; 
@@ -18,39 +22,45 @@
             position: relative;
         }
 
+        /* Thùng chứa nhạc ẩn */
         #musicContainer { width: 0; height: 0; overflow: hidden; position: absolute; visibility: hidden; }
 
-        /* Đám mây trắng */
+        /* Mây bay nhẹ nhàng */
         .cloud {
             position: absolute; background: white; border-radius: 100px;
-            opacity: 0.6; filter: blur(3px); animation: moveCloud linear infinite; z-index: 1;
+            opacity: 0.5; filter: blur(3px); animation: moveCloud linear infinite; z-index: 1;
         }
         .cloud::before, .cloud::after { content: ''; position: absolute; background: white; border-radius: 50%; }
         .c1 { width: 120px; height: 40px; top: 15%; left: -150px; animation-duration: 25s; }
         .c2 { width: 180px; height: 50px; top: 45%; left: -200px; animation-duration: 35s; animation-delay: 5s; }
         @keyframes moveCloud { from { left: -200px; } to { left: 100vw; } }
 
-        /* HIỆU ỨNG TIM BAY NHỎ */
-        /* Tim bay nhỏ */
-.heart{
-  position:absolute;
-  width:12px; height:12px;
-  background:#ff7fa9;
-  transform:rotate(45deg);
-  animation:fly 3s linear infinite;
-  opacity:0.9;
-  border-radius:2px;
-}
-.heart::before,.heart::after{
-  content:"";
-  position:absolute;
-  width:12px; height:12px;
-  background:#ff7fa9;
-  border-radius:50%;
-}
-.heart::before{top:-6px;left:0;}
-.heart::after{top:0;left:-6px;}
-@keyframes fly{0%{transform:translate(0,0) rotate(45deg);}100%{transform:translate(calc(300px - 600px*var(--randX)),-300px) rotate(45deg);}}
+        /* HIỆU ỨNG TIM BAY NGHỆ THUẬT (GIẢM LẶP) */
+        .heart {
+            position: absolute;
+            background: #ff7fa9;
+            transform: rotate(45deg);
+            animation: fly var(--duration) linear forwards;
+            opacity: var(--opacity);
+            border-radius: 2px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .heart::before, .heart::after {
+            content: ""; position: absolute; width: 100%; height: 100%;
+            background: inherit; border-radius: 50%;
+        }
+        .heart::before { top: -50%; left: 0; }
+        .heart::after { top: 0; left: -50%; }
+
+        @keyframes fly {
+            0% { transform: translateY(10vh) rotate(45deg) scale(0); opacity: 0; }
+            10% { opacity: var(--opacity); }
+            100% { 
+                transform: translate(var(--drift), -110vh) rotate(var(--rotation)) scale(1.2); 
+                opacity: 0; 
+            }
+        }
 
         .header-title {
             font-family: 'Dancing Script', cursive; color: var(--pink-primary); 
@@ -58,6 +68,7 @@
             text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
         }
 
+        /* Khinh khí cầu */
         .balloon-wrapper {
             position: relative; margin-top: 20px;
             display: flex; flex-direction: column; align-items: center;
@@ -89,7 +100,7 @@
         .envelope-icon { font-size: 3rem; animation: heartbeat 1.5s infinite; }
         @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-        /* Modal Lá thư */
+        /* Lá thư */
         #letterSection {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 79, 132, 0.2); backdrop-filter: blur(10px);
@@ -127,7 +138,7 @@
     <h1 class="header-title">Gửi em yêu của anh 🌷</h1>
 
     <div class="balloon-wrapper" onclick="openLetter()">
-        <img src="heart_final.png" alt="Trái tim" class="heart-balloon">
+        <img src="heart_final.png" alt="Trái tim hoa hồng" class="heart-balloon">
         <div class="ropes-container">
             <div class="rope"></div>
             <div class="rope"></div>
@@ -157,31 +168,25 @@ Anh iu em bé nhiều lắm lun ạ ><.
     </div>
 
     <script>
-        // Hàm tạo tim bay ngẫu nhiên
+        // Hệ thống trái tim bay tự nhiên
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
-            
-            // Vị trí ngẫu nhiên từ dưới màn hình
             heart.style.left = Math.random() * 100 + "vw";
-            heart.style.top = "100vh";
-            
-            // Biến ngẫu nhiên cho animation fly
-            heart.style.setProperty('--randX', Math.random());
-            
-            // Kích thước ngẫu nhiên
-            const size = Math.random() * 10 + 10 + "px";
+            heart.style.bottom = "-5vh"; 
+            const size = Math.random() * 10 + 8 + "px";
             heart.style.width = size;
             heart.style.height = size;
-
+            heart.style.setProperty('--opacity', Math.random() * 0.4 + 0.3);
+            heart.style.setProperty('--duration', Math.random() * 4 + 5 + "s"); // Tốc độ đa dạng
+            heart.style.setProperty('--drift', (Math.random() * 400 - 200) + "px"); // Hướng bay tản mát
+            heart.style.setProperty('--rotation', (Math.random() * 360 + 45) + "deg");
             document.body.appendChild(heart);
-
-            // Xóa tim sau khi bay xong để nhẹ web
-            setTimeout(() => { heart.remove(); }, 4000);
+            setTimeout(() => { heart.remove(); }, 9000);
         }
 
-        // Tạo tim mỗi 400ms
-        setInterval(createHeart, 400);
+        // Tạo tim thưa hơn để tránh bị cụm (1 giây 1 con)
+        setInterval(createHeart, 1000);
 
         window.onload = function() { injectMusic(); };
 
@@ -215,5 +220,3 @@ Anh iu em bé nhiều lắm lun ạ ><.
     </script>
 </body>
 </html>
-
-
