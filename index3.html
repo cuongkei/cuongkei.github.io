@@ -18,110 +18,86 @@
             position: relative;
         }
 
-        /* Container chứa nhạc ẩn */
         #musicContainer { width: 0; height: 0; overflow: hidden; position: absolute; visibility: hidden; }
 
-        /* Đám mây trắng trôi */
         .cloud {
             position: absolute; background: white; border-radius: 100px;
             opacity: 0.6; filter: blur(3px); animation: moveCloud linear infinite; z-index: 1;
         }
         .cloud::before, .cloud::after { content: ''; position: absolute; background: white; border-radius: 50%; }
-        .c1 { width: 120px; height: 40px; top: 15%; left: -150px; animation-duration: 20s; }
-        .c2 { width: 180px; height: 50px; top: 40%; left: -200px; animation-duration: 30s; animation-delay: 7s; }
+        .c1 { width: 120px; height: 40px; top: 15%; left: -150px; animation-duration: 25s; }
+        .c2 { width: 180px; height: 50px; top: 45%; left: -200px; animation-duration: 35s; animation-delay: 5s; }
         
         @keyframes moveCloud { from { left: -200px; } to { left: 100vw; } }
 
         .header-title {
-            font-family: 'Dancing Script', cursive; 
-            color: var(--pink-primary); 
-            font-size: 3.5rem; 
-            margin-top: 40px;
-            z-index: 5;
+            font-family: 'Dancing Script', cursive; color: var(--pink-primary); 
+            font-size: 3.5rem; margin-top: 40px; z-index: 5;
             text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
         }
 
-        /* Khinh khí cầu */
         .balloon-wrapper {
-            position: relative;
-            margin-top: 20px;
+            position: relative; margin-top: 20px;
             display: flex; flex-direction: column; align-items: center;
-            animation: float 5s ease-in-out infinite;
-            cursor: pointer;
-            z-index: 5;
+            animation: float 5s ease-in-out infinite; cursor: pointer; z-index: 5;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0) rotate(-0.5deg); }
-            50% { transform: translateY(-30px) rotate(0.5deg); }
+            50% { transform: translateY(-35px) rotate(0.5deg); }
         }
 
-        /* Ảnh trái tim hoa hồng của bạn */
         .heart-balloon {
-            width: 600px; 
-            max-width: 85vw;
-            filter: drop-shadow(0 15px 30px rgba(255, 79, 132, 0.3));
-            z-index: 6;
+            width: 600px; max-width: 85vw;
+            filter: drop-shadow(0 15px 30px rgba(255, 79, 132, 0.3)); z-index: 6;
         }
 
-        /* 2 dây thừng thẳng dọc song song */
         .ropes-container {
-            position: relative;
-            width: 140px; 
-            height: 100px;
-            margin-top: -30px; 
-            display: flex;
-            justify-content: space-between;
+            position: relative; width: 140px; height: 100px;
+            margin-top: -30px; display: flex; justify-content: space-between;
         }
-        .rope {
-            width: 2px; 
-            height: 100%;
-            background: rgba(166, 124, 82, 0.5);
-            border-radius: 2px;
-        }
+        .rope { width: 2px; height: 100%; background: rgba(166, 124, 82, 0.5); }
 
-        /* Giỏ đựng thư */
         .basket {
-            background: var(--basket-brown);
-            width: 130px; height: 85px;
-            border-radius: 8px 8px 25px 25px;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
-            margin-top: -5px; 
-            border: 2px solid #8d6641;
-            z-index: 7;
+            background: var(--basket-brown); width: 130px; height: 85px;
+            border-radius: 8px 8px 25px 25px; display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15); margin-top: -5px; 
+            border: 2px solid #8d6641; z-index: 7;
         }
 
         .envelope-icon { font-size: 3rem; animation: heartbeat 1.5s infinite; }
         @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-        /* Màn hình Lá thư hiện ra */
+        /* Modal Lá thư */
         #letterSection {
-            display: none; position: fixed; top: 0; left: 0; 
-            width: 100%; height: 100%;
-            background: rgba(255, 79, 132, 0.15);
-            backdrop-filter: blur(8px);
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 79, 132, 0.2); backdrop-filter: blur(10px);
             z-index: 100; align-items: center; justify-content: center;
         }
 
         .letter-paper {
             background: #fff; max-width: 500px; width: 85%;
-            padding: 40px; border-radius: 15px;
-            box-shadow: 0 20px 50px rgba(255, 79, 132, 0.2);
+            padding: 40px; border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(255, 79, 132, 0.25);
             text-align: left; line-height: 1.8; color: #444;
-            animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: slideUp 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
         }
         @keyframes slideUp { from { transform: translateY(150px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        .letter-text { font-size: 1.1rem; white-space: pre-wrap; font-weight: 500; }
+        .letter-text { font-size: 1.15rem; white-space: pre-wrap; font-weight: 500; }
         
         .back-btn {
-            background: var(--pink-primary); color: white; border: none;
-            padding: 12px; border-radius: 50px; cursor: pointer;
-            font-weight: 700; font-family: 'Quicksand'; margin-top: 30px; width: 100%;
+            background: linear-gradient(45deg, #ff4f84, #ff8dad); 
+            color: white; border: none;
+            padding: 15px; border-radius: 50px; cursor: pointer;
+            font-weight: 700; font-family: 'Quicksand'; 
+            margin-top: 30px; width: 100%;
+            font-size: 1rem;
             transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 79, 132, 0.3);
         }
-        .back-btn:hover { background: #ff2d6b; transform: scale(1.02); }
+        .back-btn:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(255, 79, 132, 0.4); }
     </style>
 </head>
 <body onclick="playMusicFallback()">
@@ -134,13 +110,11 @@
     <h1 class="header-title">Gửi em yêu của anh 🌷</h1>
 
     <div class="balloon-wrapper" onclick="openLetter()">
-        <img src="heart_final.png" alt="Trái tim hoa hồng" class="heart-balloon">
-        
+        <img src="heart_final.png" alt="Trái tim" class="heart-balloon">
         <div class="ropes-container">
             <div class="rope"></div>
             <div class="rope"></div>
         </div>
-
         <div class="basket">
             <span class="envelope-icon">✉️</span>
         </div>
@@ -161,12 +135,11 @@ Anh iu em bé nhiều lắm lun ạ ><.
             <p align="right" style="font-weight: 700; margin-top: 25px;">
                 Yêu em thật nhiều,<br>Anh ❤️
             </p>
-            <button class="back-btn" onclick="window.location.href='index.html'">Quay về Bảo tàng</button>
+            <button class="back-btn" onclick="closeLetter()">Quay về khinh khí cầu cute nhất thế giới 🎈</button>
         </div>
     </div>
 
     <script>
-        // Tự động chèn nhạc ngay khi trang vừa load
         window.onload = function() {
             injectMusic();
         };
@@ -174,21 +147,16 @@ Anh iu em bé nhiều lắm lun ạ ><.
         function injectMusic() {
             const musicDiv = document.getElementById('musicContainer');
             if (musicDiv.innerHTML === "") {
-                // Nhúng iframe YouTube phát tự động và lặp lại
                 musicDiv.innerHTML = `<iframe src="https://www.youtube.com/embed/U6iihiD0A64?autoplay=1&loop=1&playlist=U6iihiD0A64" allow="autoplay"></iframe>`;
             }
         }
 
-        // Phòng hờ nếu trình duyệt chặn tự động phát, chạm vào body sẽ kích hoạt lại
         function playMusicFallback() {
             injectMusic();
         }
 
         function openLetter() {
-            // Đảm bảo nhạc chạy khi nhấn vào khí cầu
             injectMusic();
-
-            // Hiệu ứng pháo giấy lung linh
             confetti({ 
                 particleCount: 200, 
                 spread: 100, 
@@ -196,11 +164,24 @@ Anh iu em bé nhiều lắm lun ạ ><.
                 colors: ['#ff4f84', '#ffb3c6', '#ffffff'] 
             });
 
-            // Hiện lá thư sau 0.6 giây
             setTimeout(() => {
                 document.getElementById('letterSection').style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             }, 600);
+        }
+
+        // Hàm mới để đóng thư mà không làm tắt nhạc
+        function closeLetter() {
+            const letter = document.getElementById('letterSection');
+            // Thêm hiệu ứng mờ dần khi đóng cho "cute"
+            letter.style.opacity = '0';
+            letter.style.transition = 'opacity 0.5s';
+            
+            setTimeout(() => {
+                letter.style.display = 'none';
+                letter.style.opacity = '1'; // Reset lại cho lần mở sau
+                document.body.style.overflow = 'auto';
+            }, 500);
         }
     </script>
 </body>
