@@ -31,26 +31,26 @@
         @keyframes moveCloud { from { left: -200px; } to { left: 100vw; } }
 
         /* HIỆU ỨNG TIM BAY NHỎ */
-        .heart {
-            position: absolute;
-            width: 12px; height: 12px;
-            background: #ff7fa9;
-            transform: rotate(45deg);
-            animation: fly 4s linear infinite; 
-            opacity: 0.9;
-            border-radius: 2px;
-        }
-        .heart::before, .heart::after {
-            content: "";
-            position: absolute;
-            width: 12px; height: 12px;
-            background: #ff7fa9;
-            border-radius: 50%;
-        }
-        .heart::before { top: -6px; left: 0; }
-        .heart::after { top: 0; left: -6px; }
-
-        @keyframes fly{0%{transform:translate(0,0) rotate(45deg);}100%{transform:translate(calc(300px - 600px*var(--randX)),-300px) rotate(45deg);}}
+        /* Tim bay nhỏ */
+.heart{
+  position:absolute;
+  width:12px; height:12px;
+  background:#ff7fa9;
+  transform:rotate(45deg);
+  animation:fly 3s linear infinite;
+  opacity:0.9;
+  border-radius:2px;
+}
+.heart::before,.heart::after{
+  content:"";
+  position:absolute;
+  width:12px; height:12px;
+  background:#ff7fa9;
+  border-radius:50%;
+}
+.heart::before{top:-6px;left:0;}
+.heart::after{top:0;left:-6px;}
+@keyframes fly{0%{transform:translate(0,0) rotate(45deg);}100%{transform:translate(calc(300px - 600px*var(--randX)),-300px) rotate(45deg);}}
 
         .header-title {
             font-family: 'Dancing Script', cursive; color: var(--pink-primary); 
@@ -215,4 +215,5 @@ Anh iu em bé nhiều lắm lun ạ ><.
     </script>
 </body>
 </html>
+
 
