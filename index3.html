@@ -18,6 +18,9 @@
             position: relative;
         }
 
+        /* Container chứa nhạc ẩn */
+        #musicContainer { width: 0; height: 0; overflow: hidden; position: absolute; visibility: hidden; }
+
         /* Đám mây trắng trôi */
         .cloud {
             position: absolute; background: white; border-radius: 100px;
@@ -35,6 +38,7 @@
             font-size: 3.5rem; 
             margin-top: 40px;
             z-index: 5;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
         }
 
         /* Khinh khí cầu */
@@ -52,7 +56,7 @@
             50% { transform: translateY(-30px) rotate(0.5deg); }
         }
 
-        /* Kích thước bình thường (600px) */
+        /* Ảnh trái tim hoa hồng của bạn */
         .heart-balloon {
             width: 600px; 
             max-width: 85vw;
@@ -60,7 +64,7 @@
             z-index: 6;
         }
 
-        /* 2 dây thừng thẳng dọc */
+        /* 2 dây thừng thẳng dọc song song */
         .ropes-container {
             position: relative;
             width: 140px; 
@@ -73,8 +77,10 @@
             width: 2px; 
             height: 100%;
             background: rgba(166, 124, 82, 0.5);
+            border-radius: 2px;
         }
 
+        /* Giỏ đựng thư */
         .basket {
             background: var(--basket-brown);
             width: 130px; height: 85px;
@@ -89,7 +95,7 @@
         .envelope-icon { font-size: 3rem; animation: heartbeat 1.5s infinite; }
         @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-        /* Màn hình Lá thư */
+        /* Màn hình Lá thư hiện ra */
         #letterSection {
             display: none; position: fixed; top: 0; left: 0; 
             width: 100%; height: 100%;
@@ -113,10 +119,14 @@
             background: var(--pink-primary); color: white; border: none;
             padding: 12px; border-radius: 50px; cursor: pointer;
             font-weight: 700; font-family: 'Quicksand'; margin-top: 30px; width: 100%;
+            transition: 0.3s;
         }
+        .back-btn:hover { background: #ff2d6b; transform: scale(1.02); }
     </style>
 </head>
-<body>
+<body onclick="playMusicFallback()">
+
+    <div id="musicContainer"></div>
 
     <div class="cloud c1"></div>
     <div class="cloud c2"></div>
@@ -142,7 +152,7 @@
             <div class="letter-text">
 Gửi em yêu của anh, chúc mừng ngày 8/3 em bé iu dấu của anh ạ!! 
 
-Anh chúc em ngày càng xinh đẹp, dễ thương, mạnh khỏe, vui vẻ, học giỏi ạ. Anh cũng chúc em luôn tươi tắn, hạnh phúc và giữ nụ cười trên môi. 
+Anh chúc em ngày càng xinh đẹp, dễ thương, mạnh khỏe, vui vẻ ạ. Anh cũng chúc em luôn tươi tắn, hạnh phúc và giữ nụ cười trên môi. 
 
 Đặc biệt nhất, anh mong rằng em có thể tự tin và phát triển bản thân tốt hơn nữa cũng như là mình tiếp tục đồng hành cùng nhau, em nhé. 
 
@@ -156,8 +166,37 @@ Anh iu em bé nhiều lắm lun ạ ><.
     </div>
 
     <script>
+        // Tự động chèn nhạc ngay khi trang vừa load
+        window.onload = function() {
+            injectMusic();
+        };
+
+        function injectMusic() {
+            const musicDiv = document.getElementById('musicContainer');
+            if (musicDiv.innerHTML === "") {
+                // Nhúng iframe YouTube phát tự động và lặp lại
+                musicDiv.innerHTML = `<iframe src="https://www.youtube.com/embed/U6iihiD0A64?autoplay=1&loop=1&playlist=U6iihiD0A64" allow="autoplay"></iframe>`;
+            }
+        }
+
+        // Phòng hờ nếu trình duyệt chặn tự động phát, chạm vào body sẽ kích hoạt lại
+        function playMusicFallback() {
+            injectMusic();
+        }
+
         function openLetter() {
-            confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#ff4f84', '#ffb3c6', '#ffffff'] });
+            // Đảm bảo nhạc chạy khi nhấn vào khí cầu
+            injectMusic();
+
+            // Hiệu ứng pháo giấy lung linh
+            confetti({ 
+                particleCount: 200, 
+                spread: 100, 
+                origin: { y: 0.6 }, 
+                colors: ['#ff4f84', '#ffb3c6', '#ffffff'] 
+            });
+
+            // Hiện lá thư sau 0.6 giây
             setTimeout(() => {
                 document.getElementById('letterSection').style.display = 'flex';
                 document.body.style.overflow = 'hidden';
