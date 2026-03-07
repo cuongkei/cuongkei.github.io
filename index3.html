@@ -68,7 +68,7 @@
         .envelope-icon { font-size: 3rem; animation: heartbeat 1.5s infinite; }
         @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-        /* Modal Lá thư */
+        /* Modal Lá thư với khả năng cuộn */
         #letterSection {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 79, 132, 0.2); backdrop-filter: blur(10px);
@@ -81,8 +81,17 @@
             box-shadow: 0 25px 60px rgba(255, 79, 132, 0.25);
             text-align: left; line-height: 1.8; color: #444;
             animation: slideUp 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            
+            /* PHẦN QUAN TRỌNG: Cho phép cuộn nội dung */
+            max-height: 80vh; 
+            overflow-y: auto;
             position: relative;
         }
+
+        /* Tùy chỉnh thanh cuộn cho đẹp */
+        .letter-paper::-webkit-scrollbar { width: 6px; }
+        .letter-paper::-webkit-scrollbar-thumb { background: var(--pink-light); border-radius: 10px; }
+
         @keyframes slideUp { from { transform: translateY(150px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         .letter-text { font-size: 1.15rem; white-space: pre-wrap; font-weight: 500; }
@@ -96,6 +105,8 @@
             font-size: 1rem;
             transition: 0.3s;
             box-shadow: 0 5px 15px rgba(255, 79, 132, 0.3);
+            /* Đảm bảo nút luôn ở cuối cùng nội dung cuộn */
+            display: block;
         }
         .back-btn:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(255, 79, 132, 0.4); }
     </style>
@@ -121,7 +132,7 @@
     </div>
 
     <div id="letterSection">
-        <div class="letter-paper">
+        <div class="letter-paper" id="scrollableLetter">
             <h2 style="font-family: 'Dancing Script'; color: var(--pink-primary); font-size: 2.5rem; margin-top: 0; text-align: center;">Chúc mừng 8/3!</h2>
             <div class="letter-text">
 Gửi em yêu của anh, chúc mừng ngày 8/3 em bé iu dấu của anh ạ!! 
@@ -166,21 +177,19 @@ Anh iu em bé nhiều lắm lun ạ ><.
 
             setTimeout(() => {
                 document.getElementById('letterSection').style.display = 'flex';
-                document.body.style.overflow = 'hidden';
+                // Đưa thanh cuộn về đầu thư mỗi khi mở
+                document.getElementById('scrollableLetter').scrollTop = 0;
             }, 600);
         }
 
-        // Hàm mới để đóng thư mà không làm tắt nhạc
         function closeLetter() {
             const letter = document.getElementById('letterSection');
-            // Thêm hiệu ứng mờ dần khi đóng cho "cute"
             letter.style.opacity = '0';
             letter.style.transition = 'opacity 0.5s';
             
             setTimeout(() => {
                 letter.style.display = 'none';
-                letter.style.opacity = '1'; // Reset lại cho lần mở sau
-                document.body.style.overflow = 'auto';
+                letter.style.opacity = '1';
             }, 500);
         }
     </script>
