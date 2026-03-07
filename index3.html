@@ -36,10 +36,9 @@
             width: 12px; height: 12px;
             background: #ff7fa9;
             transform: rotate(45deg);
-            animation: fly 4s linear forwards; /* Dùng forwards để mất hẳn khi xong */
-            opacity: 0.8;
+            animation: fly 4s linear infinite; 
+            opacity: 0.9;
             border-radius: 2px;
-            z-index: 2;
         }
         .heart::before, .heart::after {
             content: "";
@@ -51,14 +50,7 @@
         .heart::before { top: -6px; left: 0; }
         .heart::after { top: 0; left: -6px; }
 
-        @keyframes fly {
-            0% { transform: translate(0, 0) rotate(45deg); opacity: 0; }
-            10% { opacity: 0.8; }
-            100% { 
-                transform: translate(calc(var(--randX) * 400px - 200px), -600px) rotate(45deg); 
-                opacity: 0; 
-            }
-        }
+        @keyframes fly{0%{transform:translate(0,0) rotate(45deg);}100%{transform:translate(calc(300px - 600px*var(--randX)),-300px) rotate(45deg);}}
 
         .header-title {
             font-family: 'Dancing Script', cursive; color: var(--pink-primary); 
@@ -223,3 +215,4 @@ Anh iu em bé nhiều lắm lun ạ ><.
     </script>
 </body>
 </html>
+
